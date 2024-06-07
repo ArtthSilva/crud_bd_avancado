@@ -16,6 +16,10 @@ Este projeto é um aplicativo CRUD (Create, Read, Update, Delete) desenvolvido e
 
 <h2>📱 Preview</h2>
 
+https://github.com/ArtthSilva/receitinhas/assets/113397588/6927c177-fd3a-4c6d-9621-7216167b8eee
+
+
+
 <h2>🛠️ Funcionalidades</h2>
 
 - **CRUD Completo**: Permite criar, ler, atualizar e deletar itens.
