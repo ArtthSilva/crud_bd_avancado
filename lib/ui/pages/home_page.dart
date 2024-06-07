@@ -39,60 +39,62 @@ class _HomePageState extends State<HomePage> {
       _valueController.text = existingJournal['value'];
     }
 
-    showModalBottomSheet(
+    showDialog(
         context: context,
-        elevation: 5,
-        isScrollControlled: true,
-        builder: (_) => Container(
-              padding: EdgeInsets.only(
-                top: 15,
-                left: 15,
-                right: 15,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 120,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TextField(
-                    controller: _titleController,
-                    decoration: const InputDecoration(hintText: 'Title'),
+        builder: (_) => AlertDialog(
+              content: SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    top: 15,
+                    left: 15,
+                    right: 15,
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 20,
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: _descriptionController,
-                    decoration: const InputDecoration(hintText: 'Category'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: _valueController,
-                    decoration: const InputDecoration(hintText: 'Value'),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (id == null) {
-                        await _addItem();
-                      } else {
-                        await _updateItem(id);
-                      }
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      TextField(
+                        controller: _titleController,
+                        decoration: const InputDecoration(hintText: 'nome do produto'),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextField(
+                        controller: _descriptionController,
+                        decoration: const InputDecoration(hintText: 'categoria'),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextField(
+                        controller: _valueController,
+                        decoration: const InputDecoration(hintText: 'valor'),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (id == null) {
+                            await _addItem();
+                          } else {
+                            await _updateItem(id);
+                          }
 
-                      _titleController.text = '';
-                      _descriptionController.text = '';
-                      _valueController.text = '';
+                          _titleController.text = '';
+                          _descriptionController.text = '';
+                          _valueController.text = '';
 
-                      if (!mounted) return;
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(id == null ? 'Create New' : 'Update'),
-                  )
-                ],
+                          if (!mounted) return;
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(id == null ? 'Criar' : 'Atualizar'),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ));
   }
@@ -114,7 +116,7 @@ class _HomePageState extends State<HomePage> {
   void _deleteItem(int id) async {
     await SQLHelper.deleteItem(id);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Successfully deleted a product!'),
+      content: Text('Produto deletado com sucesso!'),
     ));
     _refreshJournals();
   }
@@ -191,12 +193,12 @@ class _HomePageState extends State<HomePage> {
                                             _deleteItem(_journals[index]['id']);
                                             Navigator.pop(context);
                                           },
-                                          child: const Text('Yes')),
+                                          child: const Text('Deletar')),
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        child: const Text('Cancel'),
+                                        child: const Text('Cancelar'),
                                       )
                                     ],
                                   );
@@ -217,34 +219,27 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showFilterForm() {
-    showModalBottomSheet(
+    showDialog(
         context: context,
-        builder: (_) => Container(
-              padding: EdgeInsets.only(
-                top: 15,
-                left: 15,
-                right: 15,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 120,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TextField(
-                    controller: _filterController,
-                    decoration: const InputDecoration(hintText: 'Category'),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _filterItems();
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Filter'),
-                  ),
-                ],
+        builder: (_) => AlertDialog(
+              content: Container(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    TextField(
+                      controller: _filterController,
+                      decoration: const InputDecoration(hintText: 'Categoria'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _filterItems();
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Filtrar'),
+                    ),
+                  ],
+                ),
               ),
             ));
   }
